@@ -1,7 +1,7 @@
 # tasks/models.py
 from django.db import models
 from projects.models import Project
-from auth.models import User
+from authentication.models import CustomUser
 from django.core.exceptions import ValidationError
 
 class Task(models.Model):
@@ -14,8 +14,8 @@ class Task(models.Model):
     end_date = models.DateField(null=True, blank=True)
     is_completed = models.BooleanField(default=False)
     visibility = models.CharField(max_length=10, choices=VISIBILITY_CHOICES, default='PUBLIC')
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_tasks')
-    assigned_to = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='assigned_tasks')
+    created_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='created_tasks')
+    assigned_to = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True, related_name='assigned_tasks')
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='tasks')
     parent_task = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='subtasks')
 
